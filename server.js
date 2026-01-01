@@ -16,6 +16,10 @@ app.use(cors());
 app.use(express.json({ limit: "25mb" }));
 app.use(express.static("public"));
 
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
 app.post("/submit", async (req, res) => {
   try {
     const { image, latitude, longitude, time } = req.body;
