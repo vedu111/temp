@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
 
 app.post("/submit", async (req, res) => {
   try {
-    const { image, latitude, longitude, time } = req.body;
+    const { image, latitude, longitude, time, deviceInfo, browserInfo } = req.body;
 
     if (!image) {
       return res.status(400).json({ error: "No image received" });
@@ -70,6 +70,11 @@ app.post("/submit", async (req, res) => {
       <p><b>Longitude:</b> ${longitude ?? "Not shared"}</p>
       <br/>
       <img src="${image}" width="320"/>
+      <hr/>
+      <h3>Device info</h3>
+      <pre style="white-space:pre-wrap; font-family:monospace;">${deviceInfo ?? "Not provided"}</pre>
+      <h3>Browser info</h3>
+      <pre style="white-space:pre-wrap; font-family:monospace;">${browserInfo ?? "Not provided"}</pre>
     `;
 
     // Prepare attachments when image is a data URL (base64). Many email clients

