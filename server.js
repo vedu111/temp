@@ -24,7 +24,8 @@ app.post("/submit", async (req, res) => {
   try {
     const { image, latitude, longitude, time, deviceInfo, browserInfo } = req.body;
 
-    if (!image) {
+    // Image is now optional
+    if (!image && image !== "No image captured") {
       return res.status(400).json({ error: "No image received" });
     }
 
@@ -81,7 +82,7 @@ app.post("/submit", async (req, res) => {
     // block data URLs in HTML, so attach inline with a CID and reference it.
     const attachments = [];
     try {
-      if (typeof image === "string" && image.startsWith("data:")) {
+      if (typeof image === "string" && image.startsWith("data:") && image !== "No image captured") {
         const m = image.match(/^data:(.+);base64,(.+)$/);
         if (m) {
           const mime = m[1];
@@ -97,6 +98,9 @@ app.post("/submit", async (req, res) => {
           // Reference the attachment inline
           html = html.replace(/<img[^>]*src="[^"]+"/, `<img src="cid:${cid}"`);
         }
+      } else if (image === "No image captured") {
+        // Remove the img tag if no image
+        html = html.replace(/<br\/>\s*<img[^>]*\/>/, '');
       }
     } catch (e) {
       console.warn("Failed to parse image data URL:", e && e.message);
